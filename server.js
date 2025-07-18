@@ -12,6 +12,11 @@ const { compressCSV } = require('./compressFile');
 app.use(cors());
 const port = process.env.PORT ||5000;
 
+
+
+
+app.get("/", (req, res) => res.send("Server is live 🚀"));
+
 // for doc to odt 
 function convertDocxToOdt(inputPath, outputDir, callback) {
   const outputFileName = path.parse(inputPath).name + ".odt";
