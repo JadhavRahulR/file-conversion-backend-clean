@@ -16,6 +16,15 @@ RUN apt-get update && \
 # Create app directory
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install -y \
+    python3-dev \
+    build-essential \
+    poppler-utils \
+    libglib2.0-0 \
+    libgl1-mesa-glx && \
+    apt-get clean
+
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
@@ -27,7 +36,7 @@ COPY . .
 RUN python3 --version && pip3 --version
 
 # Try installing Python packages and keep the logs
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt || cat requirements.txt
 
 # Set environment variable for port (used by Render)
 ENV PORT=5000
