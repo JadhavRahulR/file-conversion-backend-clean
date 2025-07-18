@@ -20,12 +20,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Install Python packages
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
-
 # Copy all source files
 COPY . .
+
+# Print and debug Python version
+RUN python3 --version && pip3 --version
+
+# Try installing Python packages and keep the logs
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Set environment variable for port (used by Render)
 ENV PORT=5000
