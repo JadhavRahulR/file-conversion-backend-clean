@@ -1,23 +1,23 @@
-# Use official Node image as base
+# Use official Node.js image
 FROM node:18-slim
 
 # Install LibreOffice
-RUN apt-get update && \
-    apt-get install -y libreoffice && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libreoffice && apt-get clean
 
-# Set working directory
+# Create app directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the app
+# Copy all source files
 COPY . .
 
-# Expose port (matches your app.listen(port))
+# Set environment variable for port (used by Render)
+ENV PORT=5000
+
+# Expose the port
 EXPOSE 5000
 
 # Start the server
