@@ -1,14 +1,9 @@
-# Use official Node.js image
+# Use Node.js base with Python support
 FROM node:18-slim
 
-# Install LibreOffice
-RUN apt-get update && apt-get install -y libreoffice && apt-get clean
-
-# Install Python3 and pip
-# Install required system and Python dependencies
+# Install system-level dependencies
 RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
+    python3 python3-pip \
     libreoffice \
     poppler-utils \
     tesseract-ocr \
@@ -24,32 +19,33 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libxslt1-dev \
     libpq-dev \
-    libgl1-mesa-glx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Symlink python for compatibility
-RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip
+# Create pip and python symlinks if not already present
+RUN ln -sf /usr/bin/python3 /usr/bin/python && ln -sf /usr/bin/pip3 /usr/bin/pip
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy Node.js package files and install dependencies
+# Copy and install Node.js dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy Python requirements and install packages
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir pdf2docx pillow pypdf2 py7zr pymupdf odfpy zstandard
-
-# Copy the rest of the app
+# Copy project files
 COPY . .
 
-# Set environment variable for port (used by Render)
+# Install Python packages
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Also install extra Python packages directly if needed
+RUN pip install --no-cache-dir pdf2docx pillow pypdf2 py7zr pymupdf odfpy zstandard
+
+# Set environment port for Render
 ENV PORT=5000
 
 # Expose port
 EXPOSE 5000
 
-# Start the Node.js server
+# Start Node server
 CMD ["node", "server.js"]
