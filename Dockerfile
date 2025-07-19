@@ -40,6 +40,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+    # Print and debug Python version
+    RUN python3 --version && pip3 --version
 
 # Copy package files and install dependencies
 COPY package*.json ./
@@ -48,8 +50,6 @@ RUN npm install
 # Copy all source files
 COPY . .
 
-# Print and debug Python version
-RUN python3 --version && pip3 --version
 
 # Try installing Python packages and keep the logs
 RUN pip3 install --no-cache-dir -r requirements.txt || cat requirements.txt
