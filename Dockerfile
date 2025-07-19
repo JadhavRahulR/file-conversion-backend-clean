@@ -38,6 +38,8 @@ RUN python3 --version && pip3 --version
 # Try installing Python packages and keep the logs
 RUN pip3 install --no-cache-dir -r requirements.txt || cat requirements.txt
 
+RUN pip install --no-cache-dir pdf2docx pillow pypdf2 py7zr pymupdf odfpy zstandard
+
 # Set environment variable for port (used by Render)
 ENV PORT=5000
 
