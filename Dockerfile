@@ -50,6 +50,7 @@ RUN apt-get update && apt-get install -y \
     RUN python3 --version && pip3 --version
 
 
+COPY requirements.txt .
 
 # Try installing Python packages and keep the logs
 RUN pip3 install --no-cache-dir -r requirements.txt
