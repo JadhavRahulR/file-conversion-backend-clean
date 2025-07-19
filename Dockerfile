@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y \
 
 
 # Try installing Python packages and keep the logs
-RUN pip3 install --no-cache-dir -r requirements.txt || cat requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN pip install --no-cache-dir pdf2docx pillow pypdf2 py7zr pymupdf odfpy zstandard
 
