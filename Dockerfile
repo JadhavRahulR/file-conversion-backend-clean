@@ -15,6 +15,12 @@ RUN apt-get update && \
 
 # Create app directory
 WORKDIR /app
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy all source files
+COPY . .
 
 # Use official Python image
 FROM python:3.11-slim
@@ -43,12 +49,6 @@ RUN apt-get update && apt-get install -y \
     # Print and debug Python version
     RUN python3 --version && pip3 --version
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy all source files
-COPY . .
 
 
 # Try installing Python packages and keep the logs
