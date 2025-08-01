@@ -1419,9 +1419,10 @@ app.post("/compress-bmp", uploadBmp.single("file"), (req, res) => {
   });
 });
 
+app.get('/api/status', (req, res) => {
+  res.send('Backend is working!');
+});
 
-
-// app.listen(5000, () => console.log('Server started on port 5000'));
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
